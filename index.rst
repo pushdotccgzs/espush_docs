@@ -13,6 +13,7 @@
     tutorial
     start
     advance
+    server
     faq
     ...
 
