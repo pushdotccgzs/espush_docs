@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'espush_docs'
+project = u'ESPUSH文档'
 copyright = u'2015, espush.cn'
 author = u'espush.cn'
 
