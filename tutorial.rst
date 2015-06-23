@@ -38,32 +38,66 @@ ESPUSH开发了不同的固件以适宜现有的8266生态，如深受广大电�
 
 如果C语言基础好，且有更多的自定义要求，更精细化的控制要求，则可以使用官方提供的SDK进行自定义固件开发。
 
+可以认为不同的需求构成了不同固件之间的区别，不同的固件是在使用上是平级的，并且无法同时使用，也就是说你使用了AT固件，那便无法执行Lua指令（Lua指令为NodeMCU固件所特有），而使用NodeMCU库，一般情况下便无法使用C语言进行更底层的开发（NodeMCU开源，也可以通过Lua C API对NodeMCU进行更深层次的控制，像ESPUSH做的一样，在NodeMCU中的ESPUSH即使用了这种形式)。
 
 --------------------------
-如何为ESP8266刷写固件
+如何刷入ESPUSH
 --------------------------
 
-官网固件刷写工具下载地址： http://bbs.espressif.com/download/file.php?id=385
+此处以安信可淘宝销售的小黄版 ESP8266-12 http://item.taobao.com/item.htm?id=42590859127 为例进行讲解，其他的如01模块等，可配备其对应的全功能测试版，更加方便，不再赘述。此款模块将IO口全部引出，且多数配置对应LED灯，方便GPIO开发于测试，并单独导出了RX于TX口，方便连接USB虚拟串口，这里需要使用TTL连接现，本文使用这一款： http://item.taobao.com/item.htm?id=39565945936，本文以win7操作系统为例，Linux及MacOS的童鞋们自行寻找对应驱动or工具。
 
-NodeMCU一键刷写工具下载地址：https://github.com/nodemcu/nodemcu-flasher/raw/master/Win32/Release/ESP8266Flasher.exe
 
-下面主要以官网的刷写工具为例进行讲解，下载解压后，按如下步骤进行
+首先连接，将TTL现的RX口、GND口、TX口接入小黄版对应接口上，TTL线的电源线置空不接，如下图，留意蓝色线为TX，白色线为RX，黑色对应GND，不要接错
 
-查找机器的串口IP
+.. image:: ./_static/images/usb2ttl.jpg
 
-开启刷写工具，选择固件及固件偏移
+连好后接入系统USB口，检查小黄版的刷写帽是否扣上，如下图所示即为扣上了，如果没有请将其扣上，成功刷入后需将其取下方能进入正常运行模式。装上电池后，处于刷写模式时中间红色LED灯为高亮的状态，如下图所示。
 
-让模块进入刷写模式
+.. image:: ./_static/images/flashmode.jpg
 
-点击开始，并重新加电
+接线完毕后，将USB2TTL串口线USB端接入机器，装入对应的串口线驱动，本文的PL2303HX驱动在这里可以下载 http://www.prolific.com.tw/TW/ShowProduct.aspx?p_id=226&pcid=79，安装完成后，设备管理器里将出现串口，记下这里的串口号，如下图所示，即为安装成功。其他TTL数据线请自行寻找对应驱动。
+
+.. image:: ./_static/images/vcom.png
+
+下载官网固件刷写工具： http://bbs.espressif.com/download/file.php?id=385，也可以使用NodeMCU的一键刷写工具，下载地址： https://github.com/nodemcu/nodemcu-flasher/raw/master/Win32/Release/ESP8266Flasher.exe，下面主要以官网的刷写工具为例进行讲解。
+
+同时请下载ESPUSH的专属固件，下载地址在 https://espush.cn 首页，如下图所示，下载对应固件，本文以AT固件为例，请下载 **AT固件 for 1M+ flash** ，下载后解压。
+
+.. image:: ./_static/images/downlink.png
+
+开启刷写工具，选择固件及固件偏移，如下图所示：
+
+.. image:: ./_static/images/flash_begin.png
+
+点击 **start** ，模块将进入刷写模式，屏幕提示等待上电同步中，此时请拔下一块电池，并重新装入，使之重新定位，让模块真正进入刷写模式，并开始刷写固件，如下图所示，正在刷写中，以及刷写完成后的界面：
+
+等待上电同步
+
+.. image:: ./_static/images/waiting.png
+
+正在刷写中
+
+.. image:: ./_static/images/flashing.png
+
+完成
+
+.. image:: ./_static/images/flashed.png
+
 
 --------------------------------
 串口调试助手及串口工具的使用
 --------------------------------
 
-我们一般都使用串口工具连接，常用的串口调试工具下载及配置
+刷写完成后，将刷写帽取下，对于ESP8266-01等其他模块，请将GPIO0悬空，使之进入正常运行模式，并重新上电，在重新上电前，我们需要配置好使用的串口工具。此部分请参考官方文档 **4B-ESP8266__AT Command Examples__CN_v0.4** ，下载地址位于此处 http://bbs.espressif.com/viewtopic.php?f=5&t=591 ，下载后解压，进入documents目录，选择对应语言后即可看到此份文档，对应文档中的 **使用指南** 章节部分进行设置，如下图所示：
 
-或者使用终端工具，这里推荐Putty或XShell，他们的下载地址以及设置方式如下
+.. image:: ./_static/images/securCRT.png
 
+配置完成后，拉高GPIO0或拔出刷写帽，重新上电，模块将进入ESPUSH专属AT固件，尝试在你的终端工具中输入AT并回车试试看，你应该能看到他返回OK，尝试输入AT+GMR试试？
 
+返回OK即为配置正常，返回AT或无返回或无法输入，均为波特率配置错误
 
+.. image:: ./_static/images/boot_ready.png
+
+AT+GMR命令可以得知AT固件版本号及使用的SDK版本信息等，此处可以看到ESPUSH对应版本号。
+
+.. image:: ./_static/images/version.png

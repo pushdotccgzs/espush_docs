@@ -10,22 +10,25 @@ AT固件
 * 按如下步骤，下载AT固件，自己编译或使用预编译的版本，并刷入板子。固件刷入工具最好使用乐鑫推荐的[Flash Download Tool](http://bbs.espressif.com/viewtopic.php?f=5&t=433)。
 
 .. code-block:: shell
+
     #使用以下命令编译AT固件
     git clone https://github.com/pushdotccgzs/espush_at.git
     cd espush_at
     make clean && make
     #或者直接使用bin目录下以预编译
-    bin/eagle.flash.bin	0x00000
-    bin/eagle.irom0text.bin	0x40000
-    bin/blank.bin	0x7E000
+    bin/eagle.flash.bin 0x00000
+    bin/eagle.irom0text.bin 0x40000
+    bin/blank.bin   0x7E000
 
 刷入时截图如下：
+
 .. image:: _static/images/at_flashing.png
 
 
 * 开启调试控制台，默认波特率BIT_RATE_115200，按以下方式输入指令：
 
-.. code-block::
+.. code-block:: text
+
     //注解，以下以 「>」开头的为输入行，已「<」开头的为输出行，其余为注解;
     //AT 命令测试
     >AT
@@ -74,47 +77,54 @@ AT固件
 #AT指令说明
 AT-PUSH固件新增了3个命令，以下做简要说明
 - AT+PUSH，使用AT+PUSH?可查询当前连接状态，返回值定义为：
-```
-CONNECTING = 0
-DNS_LOOKUP = 1
-CONNECTED = 2
-DISCONNECTED = 3
-```
-留意只有返回值为 `2` 时才代表已连接，其余都是未连接状态，如连接中，DNS查找中，已断开等。
 
-- `AT+PUSH_DEF=APPID,APPKEY`可连入ES-PUSH系统。命令为异步式，敲入后立即返回，并将推送APP信息包括ID于KEY保存在flash中，下次启动且进入station模式后，将自动连接平台。APPID与APPKEY均不需要输入引号，直接键入即可，如` AT+PUSH_DEF=123134,25b28f0ffb9711e4a96d4341579b49a1`，且后面不得跟随多余的空格或其他可见或不可见字符。此条为无效的示例命令，照抄不会连入平台。
+.. code-block:: C
 
-- `AT+PUSH_CUR=APPID,APPKEY`可连入ES-PUSH系统，与`AT+PUSH_DEF`类似，但不同的是并不会保存推送连接信息，下次启动后需要重新设置。
+    CONNECTING = 0
+    DNS_LOOKUP = 1
+    CONNECTED = 2
+    DISCONNECTED = 3
+
+
+留意只有返回值为 **2** 时才代表已连接，其余都是未连接状态，如连接中，DNS查找中，已断开等。
+
+- **AT+PUSH_DEF=APPID,APPKEY** 可连入ES-PUSH系统。命令为异步式，敲入后立即返回，并将推送APP信息包括ID于KEY保存在flash中，下次启动且进入station模式后，将自动连接平台。APPID与APPKEY均不需要输入引号，直接键入即可，如` AT+PUSH_DEF=123134,25b28f0ffb9711e4a96d4341579b49a1`，且后面不得跟随多余的空格或其他可见或不可见字符。此条为无效的示例命令，照抄不会连入平台。
+
+- **AT+PUSH_CUR=APPID,APPKEY** 可连入ES-PUSH系统，与`AT+PUSH_DEF`类似，但不同的是并不会保存推送连接信息，下次启动后需要重新设置。
 
 可随时使用AT+PUSH?查询连接状态，当处于可连接时，能使用如下命令。
 - AT+PUSHMSG，数据推送，距离推送HELLO字符串到服务器可发送指令`AT+PUSHMSG=HELLO`即可。在与服务器正常连接的情况下返回OK，否则返回ERROR。
 
 - AT+UNPUSH，使用此命令断开与服务器的连接，断开后服务端也将无法推送数据到终端。返回OK。
-- +MSG，收到数据后，模块将向串口写入以下数据，数据已`+MSG %d:`开头，其中%d为
+- +MSG，收到数据后，模块将向串口写入以下数据，数据已 **+MSG %d:** 开头，其中%d为收到的数据长度
 - AT+GPIO_LOW=N ，使用此指令控制指定GPIO口的低电平，可远程使用此命令。
 - AT+GPIO_HIGH=N，同上，使用此命令控制GPIO口的高电平，可远程使用。可控制的GPIO口参考如下：
-```C
-//0 ~ 5
-{0, FUNC_GPIO0, PERIPHS_IO_MUX_GPIO0_U},
-{1, FUNC_GPIO1, PERIPHS_IO_MUX_U0TXD_U},  //串口tx口，请不要使用
-{2, FUNC_GPIO2, PERIPHS_IO_MUX_GPIO2_U},
-{3, FUNC_GPIO3, PERIPHS_IO_MUX_U0RXD_U},  //串口RX口，请不要使用
-{4, FUNC_GPIO4, PERIPHS_IO_MUX_GPIO4_U},
-{5, FUNC_GPIO5, PERIPHS_IO_MUX_GPIO5_U},
-//9 ~ 10
-{9, FUNC_GPIO9, PERIPHS_IO_MUX_SD_DATA2_U},
-{10, FUNC_GPIO10, PERIPHS_IO_MUX_SD_DATA3_U},
-//12~15
-{12, FUNC_GPIO12, PERIPHS_IO_MUX_MTDI_U},
-{13, FUNC_GPIO13, PERIPHS_IO_MUX_MTCK_U},
-{14, FUNC_GPIO14, PERIPHS_IO_MUX_MTMS_U},
-{15, FUNC_GPIO15, PERIPHS_IO_MUX_MTDO_U},
-```
+
+.. code-block:: C
+
+    //0 ~ 5
+    {0, FUNC_GPIO0, PERIPHS_IO_MUX_GPIO0_U},
+    {1, FUNC_GPIO1, PERIPHS_IO_MUX_U0TXD_U},  //串口tx口，请不要使用
+    {2, FUNC_GPIO2, PERIPHS_IO_MUX_GPIO2_U},
+    {3, FUNC_GPIO3, PERIPHS_IO_MUX_U0RXD_U},  //串口RX口，请不要使用
+    {4, FUNC_GPIO4, PERIPHS_IO_MUX_GPIO4_U},
+    {5, FUNC_GPIO5, PERIPHS_IO_MUX_GPIO5_U},
+    //9 ~ 10
+    {9, FUNC_GPIO9, PERIPHS_IO_MUX_SD_DATA2_U},
+    {10, FUNC_GPIO10, PERIPHS_IO_MUX_SD_DATA3_U},
+    //12~15
+    {12, FUNC_GPIO12, PERIPHS_IO_MUX_MTDI_U},
+    {13, FUNC_GPIO13, PERIPHS_IO_MUX_MTCK_U},
+    {14, FUNC_GPIO14, PERIPHS_IO_MUX_MTMS_U},
+    {15, FUNC_GPIO15, PERIPHS_IO_MUX_MTDO_U},
+
 
 使用范例及方式见下图
-![Alt text](./docs/images/remote_at.png)
 
-![Alt text](./docs/images/push_at.png)
+.. image:: _static/images/remote_at.png
+
+.. image:: _static/images/push_at.png
+
 
 #固件编译及源码说明
 运行`git clone https://github.com/pushdotccgzs/espush_at.git`，克隆AT固件源码库，此源码fork自[乐鑫官方AT固件](http://bbs.espressif.com/viewtopic.php?f=5&t=481)，并在此基础上增加了用于推送的命令，具体可见源码`app/user/at_push.c`。执行`make`即可编译，若需要使用云端推送升级功能，需要使用大于512KB的Flash，见官方的[说明](http://bbs.espressif.com/viewtopic.php?f=5&t=481)：
@@ -136,25 +146,26 @@ NodeMCU固件
 SDK开发库
 ---------------
 
-#使用esp-sdk开发
 首先当然是clone 项目https://github.com/pushdotccgzs/espush_sdk
 
 本质上，我的工作只是在官方sdk上新增了库文件libpush.a，并修改其makefile而已，官方最新版SDK于此：http://bbs.espressif.com/viewtopic.php?f=5&t=481&sid=2b010931ef357b2847f14a6f012e2d84
 
-客户端的使用方式极为简单，克隆此[github库](https://github.com/pushdotccgzs/esp_push_example)，使用
+客户端的使用方式极为简单，克隆此github库https://github.com/pushdotccgzs/esp_push_example，使用如下代码：
 
-`make clean && make BOOT=new APP=1`
+.. code-block: shell
 
-即可编译出user1，同理使用
+    make clean && make BOOT=new APP=1
+    #即可编译出user1，同理使用
+    make clean && make BOOT=new APP=2
+    即可编译出user2.
 
-`make clean && make BOOT=new APP=2`
 
-即可编译出user2.
-
-本质上只是在[乐鑫官方库](http://bbs.espressif.com/viewtopic.php?f=5&t=321)的基础上增加了用于推送的`libpush`库，如果开发者使用如安信可IDE等，可直接编译出对应的flash rom。
+本质上只是在乐鑫官方库http://bbs.espressif.com/viewtopic.php?f=5&t=321的基础上增加了用于推送的 **libpush** 库，如果开发者使用如安信可IDE等，可直接编译出对应的flash rom。
 
 
 ---------------
 手机APP
 ---------------
+
+此处下载手机APP https://github.com/pushdotccgzs/espush_app 克隆后bin目录即为最新的手机APP，使用了基于HTML5技术的MUI框架完成，熟悉安卓开发的工程师可自行根据服务端SDK进行开发。
 
