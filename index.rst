@@ -11,10 +11,10 @@
 .. toctree::
 
     tutorial
-    start
+    at
+    nodemcu
     advance
     server
     faq
-    ...
 
 
