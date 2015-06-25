@@ -8,7 +8,7 @@ AT固件
 ---------------
 注册平台账号，前往https://espush.cn/web/register/注册账号并登入，点击“设备类别 https://espush.cn/web/apps/”，并新增一个APP，记录新APP的APPID与APPKEY，稍后使用。
 
-按如下步骤，下载AT固件，自己编译或使用预编译的版本，并刷入板子。固件刷入工具最好使用乐鑫推荐的Flash Download Tool http://bbs.espressif.com/viewtopic.php?f=5&t=433。
+按如下步骤，下载AT固件，自己编译或使用预编译的版本，预编译好的下载地址在这里 https://espush.cn/web/down_roms/espush_at  并刷入板子。固件刷入工具最好使用乐鑫推荐的Flash Download Tool http://bbs.espressif.com/viewtopic.php?f=5&t=433。
 
 .. code-block:: shell
 
@@ -131,6 +131,8 @@ AT-PUSH固件新增了3个命令，以下做简要说明
 
 .. image:: _static/images/push_at.png
 
+**注意**，关于GPIO控制指令，你需要知道我的测试结果：
+如下口的测试是可以的：0, 2, 4，5，12，13，14，15，其中4，5 比较特殊，对于小黄版，用单独接LED测试失败，但板载的LED却OK。以下GPIO口测试失败，1，3，9，10，其中1和3 是rx与tx口，使用的话，串口会失去响应，但事实上系统仍然在继续运转，你可以从云端推送 **AT+RST** 使之重启。另外9和10导致模块长时间失去响应，并最终导致无法喂狗而重启，导致wdt reset，继而重启。
 
 ------------------
 固件编译及源码说明
@@ -151,6 +153,4 @@ AT-PUSH固件新增了3个命令，以下做简要说明
 
 
 定制其他命令可简单在 **user_main.c** 中的 **at_custom_cmd** 数组中新增即可。
-
-
 
