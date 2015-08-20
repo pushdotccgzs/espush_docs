@@ -108,6 +108,22 @@ AT+GMR命令可以得知AT固件版本号及使用的SDK版本信息等，此处
 .. image:: ./_static/images/version.png
 
 
+如果您使用XShell工具而非图示的secureCRT，则参考如下图示完成配置：
+
+
+.. image:: ./_static/images/xshell_01.png
+
+选择串口，并为其命名后，点击 Serial 继续
+
+.. image:: ./_static/images/xshell_02.png
+
+配置串口的波特率，留意AT固件一般使用的波特率为115200，NodeMCU使用的波特率为9600，您可以在启动源码中自行修改此值。
+
+.. image:: ./_static/images/xshell_03.png
+
+在「终端」的「VT」选项卡中，务必选中 「New Line Mode」选项，完毕后连接即可。
+
+
 ---------------
 手机APP
 ---------------

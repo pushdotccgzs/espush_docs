@@ -101,7 +101,9 @@ AT-PUSH固件新增了3个命令，以下做简要说明
 可随时使用AT+PUSH?查询连接状态，当处于可连接时，能使用如下命令。
 - AT+PUSHMSG，数据推送，距离推送HELLO字符串到服务器可发送指令`AT+PUSHMSG=HELLO`即可。在与服务器正常连接的情况下返回OK，否则返回ERROR。
 
-- **AT+UNPUSH**，使用此命令断开与服务器的连接，断开后服务端也将无法推送数据到终端。返回OK。
+- **AT+N_AP** ，使用此命令，开启AP组网模式，此时模块将发出名为ESP_AT的SSID，使用密码espush.cn登入后，网关机器即为模块地址，此时可配置目标路由器的SSID与密码
+- **AT+N_SMC** ，使用此命令，开启SmartConfig组网模式，此时模块将监听空中的无线广播数据，使用官网的ESPTouch APK即可连接并配置模块的联网信息，官网APK下载地址：https://github.com/EspressifApp/EsptouchForAndroid
+- **AT+PUSHCLOSE**，使用此命令断开与服务器的连接，断开后服务端也将无法推送数据到终端。返回OK。
 - **+MSG**，收到数据后，模块将向串口写入以下数据，数据已 **+MSG %d:** 开头，其中%d为收到的数据长度
 - **AT+GPIO_LOW=N** ，使用此指令控制指定GPIO口的低电平，可远程使用此命令。
 - **AT+GPIO_HIGH=N**，同上，使用此命令控制GPIO口的高电平，可远程使用。可控制的GPIO口参考如下：

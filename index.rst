@@ -13,8 +13,10 @@
     tutorial
     at
     nodemcu
-    advance
+    sdk_lib
     server
+    ingenuity
     faq
+    changelog
 
 
