@@ -10,6 +10,7 @@
 
 .. toctree::
 
+    quickstart
     tutorial
     at
     nodemcu

@@ -49,18 +49,18 @@ ESPUSH开发了不同的固件以适宜现有的8266生态，如深受广大电�
 如何刷入ESPUSH
 --------------------------
 
-此处以安信可淘宝销售的小黄版 ESP8266-12 http://item.taobao.com/item.htm?id=42590859127 为例进行讲解，其他的如01模块等，可配备其对应的全功能测试版，更加方便，不再赘述。此款模块将IO口全部引出，且多数配置对应LED灯，方便GPIO开发于测试，并单独导出了RX于TX口，方便连接USB虚拟串口，这里需要使用TTL连接现，本文使用这一款： http://item.taobao.com/item.htm?id=39565945936，本文以win7操作系统为例，Linux及MacOS的童鞋们自行寻找对应驱动or工具。
+**ESPUSH** 专属开发板已上线， https://item.taobao.com/item.htm?id=523362788057 开发测试更为方便，配备温湿度传感器、红外传感器、按钮一件配置、光耦继电器、LED、三色彩灯等，全方位覆盖物联网开发方方面面，不使用额外单片机，释放ESP8266最大能量，使用普通Android手机数据线即可连接，开发测试从此不用单独飞线，一切以你的开发效率着想。
+
+.. image:: ./_static/images/espush_board/b1.jpg
+
+ESPUSH IoT on ESP8266
+
+.. image:: ./_static/images/espush_board/b2.jpg
 
 
-首先连接，将TTL现的RX口、GND口、TX口接入小黄版对应接口上，TTL线的电源线置空不接，如下图，留意蓝色线为TX，白色线为RX，黑色对应GND，不要接错
+.. image:: ./_static/images/espush_board/b3.jpg
 
-.. image:: ./_static/images/usb2ttl.jpg
-
-连好后接入系统USB口，检查小黄版的刷写帽是否扣上，如下图所示即为扣上了，如果没有请将其扣上，成功刷入后需将其取下方能进入正常运行模式。装上电池后，处于刷写模式时中间红色LED灯为高亮的状态，如下图所示。
-
-.. image:: ./_static/images/flashmode.jpg
-
-接线完毕后，将USB2TTL串口线USB端接入机器，装入对应的串口线驱动，本文的PL2303HX驱动在这里可以下载 http://www.prolific.com.tw/TW/ShowProduct.aspx?p_id=226&pcid=79，安装完成后，设备管理器里将出现串口，记下这里的串口号，如下图所示，即为安装成功。其他TTL数据线请自行寻找对应驱动。
+点这里下载驱动程序，连入系统，待驱动安装完毕，正常情况下系统中的虚拟串口会生成，如下图：
 
 .. image:: ./_static/images/vcom.png
 
@@ -87,6 +87,15 @@ ESPUSH开发了不同的固件以适宜现有的8266生态，如深受广大电�
 完成
 
 .. image:: ./_static/images/flashed.png
+
+
+--------------------------------
+使用ESPUSH专用刷写工具
+--------------------------------
+
+下载ESPUSH固件专属刷写工具，无需下载固件，只需要选择目标串口，即可一键完成刷写。 http://pan.baidu.com/s/1bpwnBiv
+
+.. image:: ./_static/images/espush_board/flasher.png
 
 
 --------------------------------
