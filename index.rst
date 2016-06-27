@@ -16,8 +16,5 @@
     nodemcu
     sdk_lib
     server
-    ingenuity
-    faq
-    changelog
 
 
